@@ -164,8 +164,13 @@ Ruff); the original 140-package macOS snapshot remains historical and unchanged.
 - CI is offline **with respect to Carlink**: pytest blocks internet sockets.
   Dependency installation and GitHub-based HACS validation require network.
   HACS validation reads the GitHub repository, not unpublished local files.
-  No hosted CI or HACS action was run. Docker/Podman/Colima are unavailable;
-  no container infrastructure was installed. Linux execution remains pending.
+  At Task 6 no hosted validators had run. Publication subsequently verified
+  Linux tests, hosted hassfest, and HACS validation on the reviewed implementation
+  commit `f0f0b0e8234efed12e338b3a9cebca11b19bf356`:
+  [successful workflow](https://github.com/angel12/ha-carlink/actions/runs/39083341837).
+  HACS initially failed only for absent repository topics; after the owner added
+  them, its rerun passed without code changes. No local container runtime was
+  installed. Hosted Linux evidence does not establish installation on HA OS.
 
 ### Compatibility and acceptance boundaries
 
@@ -180,19 +185,24 @@ failed partial-setup teardown require **restart-only recovery**; disabled runtim
 ownership is retained rather than falsely reporting safe cleanup. Running work
 can delay reload/shutdown; no hard wall-clock bound is claimed.
 
-Still required before user-facing readiness:
+### Publication verification
 
-1. Final whole-integration Dusk exact-artifact review (separate from earlier
-   task reviews and plan approval).
-2. Owner authorized publication after review; commit/push/release execution is
-   still pending the final reviewed artifact.
-3. Owner selected MIT; root `LICENSE` contains the MIT License, copyright (c)
-   2026 angel12. Confirm remote license recognition, description/topics/issues,
-   and public visibility during publication.
-4. Hosted Linux CI, current-container hassfest/HACS validation, and actual HACS
-   download + dependency installation on the target HA instance.
-5. Separately approved live login/identity verification and safe, observed
-   physical commands. No credentials or live Carlink API were accessed here.
+Dusk approved the whole implementation and then the final fixes/MIT packaging
+against exact file hashes before the initial commit. Final local verification
+passed **165 tests with 99% branch-aware coverage**, Ruff, dependency checks,
+actionlint, and tag-specific hassfest. The final fix tests cover translated
+cleanup errors and retained-runtime recovery; the Task 6 results above are
+historical, not the final test count.
+
+The owner authorized MIT licensing and publication. GitHub recognizes the MIT
+license; the repository is public, issues are enabled, and the required topics
+are present. The initial code commit is the exact reviewed implementation.
+This documentation-only publication update does not change that reviewed code.
+
+Remaining acceptance steps are actual HACS download/dependency installation on
+the target HA instance and separately approved live login/identity verification
+and safe, observed physical commands. No credentials or live Carlink API were
+accessed during development, review, or CI.
 
 ## Sources checked
 

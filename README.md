@@ -9,10 +9,11 @@ vendor logo (source: `scripts/generate_icon.py`).
 
 ## Status and requirements
 
-Development/test build; offline tests use real **Home Assistant 2026.9.3** and
-**Python 3.14.7** on macOS. HACS's minimum is **2026.9.3**, the tested baseline,
-not a promise of compatibility with all later releases. Linux/HA OS, hosted CI,
-HACS download, and live vehicle operation have not yet been verified.
+Initial test release; offline tests use real **Home Assistant 2026.9.3** and
+**Python 3.14.7** on macOS and hosted Linux CI. HACS's minimum is **2026.9.3**,
+the tested baseline, not a promise of compatibility with all later releases.
+The 165-test suite, hosted hassfest, and HACS validation pass. Actual HACS
+download/installation on HA OS and live vehicle operation remain unverified.
 See [compatibility and verification](docs/compatibility.md).
 
 The library is pinned to an approved immutable Git revision, **not a published
@@ -27,8 +28,7 @@ unverified PyPI version.
 
 ## Install using HACS (after repository publication)
 
-The repository must contain the reviewed files on GitHub before these steps can
-work. This checkout does not itself constitute a published release.
+The reviewed integration is published in this repository under the MIT license.
 
 1. Install [HACS](https://www.hacs.xyz/docs/use/) if needed.
 2. In HACS, open the menu → **Custom repositories**. Add
