@@ -21,7 +21,7 @@ def test_manifest_has_ui_setup():
     assert manifest == {
         "domain": "carlink",
         "name": "Carlink",
-        "version": "0.1.0",
+        "version": "0.1.1",
         "config_flow": True,
         "integration_type": "device",
         "iot_class": "cloud_polling",

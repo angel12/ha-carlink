@@ -12,5 +12,5 @@
   "requirements": [
     "pycarlink@git+https://github.com/angel12/PyCarLink.git@a11d551491fc8e6025c7d68314cc7666d040cbac"
   ],
-  "version": "0.1.0"
+  "version": "0.1.1"
 }

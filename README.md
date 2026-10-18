@@ -107,6 +107,61 @@ No live login or command was used for development acceptance.
 Report the HA/Python versions and sanitized error category at the
 [issue tracker](https://github.com/angel12/ha-carlink/issues), without credentials.
 
+## Command-status debug logging
+
+This diagnostic observes the pinned library's existing status polls; it does not
+fix intermittent failures or change success/failure classification, polling,
+retries, or overlap protection. A physical action can succeed even when HA reports
+an error. Do not replay commands to obtain more logs.
+
+After installing a build containing this diagnostic, enable **Carlink only**:
+**Settings → Devices & services → Carlink → three-dot menu → Enable debug logging**.
+Disable it from the same menu after the observation window. HA may download a log
+when disabling; do not upload the entire file without reviewing/redacting it.
+Alternatively, use **Developer tools → Actions** (no restart required):
+
+```yaml
+action: logger.set_level
+data:
+  custom_components.carlink.client: debug
+```
+
+Disable that explicit override afterward by setting the same logger to `warning`
+(or its prior level). Do not enable root, Requests, urllib3, or HTTP wire logging.
+Enabling logging itself sends no commands. Only observe an independently intended,
+explicitly approved safe action; do not press controls repeatedly or start an
+engine in an enclosed space.
+
+Look for `custom_components.carlink.client` lines beginning `Command status:`:
+
+- `exact:Success`, `exact:Pending`, `exact:Processing`: allowlisted upstream tokens.
+- `case:Success`, `whitespace:Success`, `case+whitespace:Processing` (and equivalent
+  variants): a bounded string matches an allowlisted token only after the stated
+  normalization. **The original value still goes to the library unchanged**;
+  these variants are not newly accepted as success or pending.
+- `unknown:string:empty`, `1-32`, `33-128`, or `over-128` (with the
+  `unknown:string:` prefix): length buckets, never the arbitrary string itself.
+  Normalization is attempted only up to 128 characters. Other values use fixed
+  type categories, never their contents or dynamic class names.
+- `read-error`: the existing status read raised; no exception text or traceback
+  is logged. A failure before polling can produce no diagnostic line.
+
+Privacy tradeoff: unknown statuses are deliberately not printed, truncated, or
+hashed. This can distinguish token formatting, pending exhaustion, and read
+errors, but cannot identify an arbitrary vendor failure code or distinguish two
+unknown strings in the same bucket. Hashing is unnecessary here and could expose
+low-entropy secrets to guessing. Further investigation may require a separately
+reviewed allowlist based on a verified vendor contract—not raw-response logging.
+
+Share **only the `Command status:` lines for the relevant time window**, in order,
+plus HA/integration versions, the intended action, HA's error category (including
+whether it was a busy rejection), and the independently observed physical result.
+Review timestamps and surrounding text for privacy before sharing. These lines
+contain no account, vehicle, command IDs, headers, credentials, location, raw
+responses, or exception details. They have no per-entry correlation identifier;
+if multiple accounts act simultaneously, the sequence may be ambiguous. Do not
+share `.storage`, full HTTP traces, or unreviewed debug downloads.
+
 ## Uninstall
 
 Wait for active work to settle and verify the vehicle independently if an outcome

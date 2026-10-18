@@ -7,9 +7,10 @@ from concurrent.futures import Future
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed, HomeAssistantError
-from pycarlink import PyCarlink
 from pycarlink.PyCarLink import MalformedResponseError, NoAssetsError
 from requests.exceptions import HTTPError
+
+from .client import DiagnosticCarlink as PyCarlink
 
 
 def _error(key: str) -> HomeAssistantError:
