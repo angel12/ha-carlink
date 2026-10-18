@@ -1,0 +1,16 @@
+{
+  "domain": "carlink",
+  "name": "Carlink",
+  "codeowners": [
+    "@angel12"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/angel12/ha-carlink",
+  "integration_type": "device",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/angel12/ha-carlink/issues",
+  "requirements": [
+    "pycarlink@git+https://github.com/angel12/PyCarLink.git@a11d551491fc8e6025c7d68314cc7666d040cbac"
+  ],
+  "version": "0.1.0"
+}

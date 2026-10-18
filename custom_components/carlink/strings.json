@@ -1,0 +1,73 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sign in to Carlink",
+        "description": "Enter your Carlink service credentials, not your Home Assistant login. Only the first vehicle on the account is supported.",
+        "data": {"email": "Carlink email", "password": "Carlink password"}
+      },
+      "reauth_confirm": {
+        "title": "Sign in to Carlink again",
+        "description": "Use the same Carlink account and vehicle. Previously submitted commands will not be retried.",
+        "data": {"email": "Carlink email", "password": "Carlink password"}
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid Carlink credentials.",
+      "cannot_connect": "Could not connect to Carlink. Try again.",
+      "no_assets": "No vehicles were found in this Carlink account.",
+      "invalid_response": "Carlink returned an invalid response.",
+      "identity_mismatch": "The account or first vehicle differs from the configured identity. Existing credentials have not been changed.",
+      "unknown": "An unexpected error occurred. Try again."
+    },
+    "abort": {
+      "already_configured": "This Carlink account is already configured.",
+      "reauth_successful": "Carlink credentials updated successfully."
+    }
+  },
+  "entity": {
+    "lock": {"doors": {"name": "Doors"}},
+    "button": {
+      "start_engine": {"name": "Start engine"},
+      "stop_engine": {"name": "Stop engine"}
+    }
+  },
+  "exceptions": {
+    "platform_setup_failed": {
+      "message": "Carlink platforms could not be loaded. Reload the integration to retry."
+    },
+    "platform_cleanup_failed": {
+      "message": "Carlink platforms could not be unloaded. Controls are disabled; restart Home Assistant before retrying."
+    },
+    "identity_mismatch": {
+      "message": "The account or first vehicle has changed. Restore the originally configured vehicle/account, or remove and configure the integration again to bind a different vehicle. No commands were submitted."
+    },
+    "invalid_action": {
+      "message": "This action is not supported. No command was submitted."
+    },
+    "busy": {
+      "message": "Another command is still running. This new command was not submitted."
+    },
+    "closed": {
+      "message": "The Carlink connection is closing. No command was submitted."
+    },
+    "command_failed": {
+      "message": "Carlink reported that the command failed."
+    },
+    "unknown_outcome": {
+      "message": "The command outcome could not be confirmed. It may have executed. Check the vehicle before trying again."
+    },
+    "auth_failed": {
+      "message": "Authentication failed. Sign in again. Any command already submitted could not be confirmed and will not be retried."
+    },
+    "cannot_connect": {
+      "message": "Could not connect to Carlink."
+    },
+    "invalid_response": {
+      "message": "Carlink returned an invalid response."
+    },
+    "no_assets": {
+      "message": "No vehicles were found in this Carlink account."
+    }
+  }
+}

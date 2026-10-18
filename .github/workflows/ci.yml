@@ -1,0 +1,51 @@
+name: Offline tests and integration validation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.7'
+      - name: Install verified baseline and exact manifest dependency
+        run: |
+          python -m pip install pip==26.2
+          python -m pip install --group test
+          python -c 'import json, subprocess, sys; from pathlib import Path; requirements = json.loads(Path("custom_components/carlink/manifest.json").read_text())["requirements"]; subprocess.check_call([sys.executable, "-m", "pip", "install", *requirements])'
+      - run: python -m pip check
+      - run: python -m ruff check .
+      # pytest.ini options block internet sockets; no Carlink credentials are used.
+      - run: python -m pytest -q --cov=custom_components.carlink --cov-report=term-missing
+
+  hassfest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      # No supported inputs. Wrapper uses the upstream moving container image.
+      - uses: home-assistant/actions/hassfest@cd6f3635a740c84d8a14f6121a90068b8ece6bf6
+
+  hacs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # Reads the GitHub repository remotely, not a local checkout. No checks ignored.
+      # Wrapper is pinned; upstream Docker image remains ghcr.io/hacs/action:main.
+      - uses: hacs/action@1ebf01c408f29afcb6406bd431bc98fd8cbb15aa
+        with:
+          category: integration
+          comment: 'false'
